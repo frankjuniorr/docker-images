@@ -10,7 +10,7 @@ ENV TZ=America/Recife
 
 # Instalação dos pacotes
 RUN dnf update -y && \
-    dnf install -y vim bash ncurses epel-release && \
+    dnf install -y vim git bash ncurses epel-release && \
     dnf clean all && \
     rm -rf /var/cache/dnf
 

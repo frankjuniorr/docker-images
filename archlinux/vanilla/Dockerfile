@@ -11,7 +11,7 @@ ENV TZ=America/Recife
 
 # Instalação dos pacotes
 RUN pacman -Syu --noconfirm && \
-    pacman -Sy --noconfirm vim bash curl wget figlet && \
+    pacman -Sy --noconfirm vim bash git curl wget figlet && \
     rm -rf /var/cache/pacman/pkg/*
 
 # Define o shell padrão

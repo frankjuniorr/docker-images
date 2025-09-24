@@ -10,7 +10,7 @@ ENV TZ=America/Recife
 
 # Instalação dos pacotes
 RUN apk update && \
-    apk add --no-cache vim bash curl wget figlet
+    apk add --no-cache vim bash git curl wget figlet
 
 # Define o shell padrão
 CMD ["/bin/bash"]
