@@ -1,0 +1,49 @@
+name: Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  docker:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        os: [ubuntu, rockylinux, archlinux, alpine]
+        variant: [vanilla, cli-tools]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect changed OS directories
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            ubuntu:
+              - 'ubuntu/**'
+            rockylinux:
+              - 'rockylinux/**'
+            archlinux:
+              - 'archlinux/**'
+            alpine:
+              - 'alpine/**'
+            
+      - name: Log in to GHCR
+        if: steps.filter.outputs[matrix.os] == 'true'
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Build & Push
+        if: steps.filter.outputs[matrix.os] == 'true'
+        run: |
+          IMAGE_NAME=ghcr.io/${{ github.repository }}/${{ matrix.os }}-${{ matrix.variant }}
+          
+          # Construção e envio da imagem
+          docker build -t ${IMAGE_NAME}:latest ./${{ matrix.os }}/${{ matrix.variant }}
+          docker push ${IMAGE_NAME}:latest
