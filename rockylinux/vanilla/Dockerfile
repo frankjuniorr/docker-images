@@ -14,6 +14,9 @@ RUN dnf update -y && \
     dnf clean all && \
     rm -rf /var/cache/dnf
 
+RUN dnf install -y figlet && \
+    rm -rf /var/cache/dnf
+
 # Define o shell padrão
 CMD ["/bin/bash"]
 
